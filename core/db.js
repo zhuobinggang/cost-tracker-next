@@ -26,6 +26,9 @@ function getReactStorage(){
 */
 
 function dateFormatted(time){
+  if(typeof time == 'string'){
+    time = new Date(time)
+  }
   return [time.getFullYear(), time.getMonth() + 1, time.getDate()].join('-');
 }
 
@@ -95,8 +98,8 @@ const readAllCostInDate = function(time){
   }
   const storage = getStorage();
   return storage.getItem(time).then(item => {
-    console.log("ReadAllCostInDate: ")
-    console.log(time, item)
+    //console.log("ReadAllCostInDate: ")
+    //console.log(time, item)
     if(item == null){
       return []
     }else{
@@ -114,6 +117,7 @@ const saveList = function(list){
   const storage = getStorage();
   const map = {}
   list.forEach(item => {
+    item.time = dateFormatted(item.time)
     if(map[item.time] == null){
       map[item.time] = [item]
     }else{

@@ -17,3 +17,13 @@ Feature: Cost Analysis Today
   Examples:
     | typeList | costList | totalCost |
     | Life, Food | 200, 300 | 500 |
+
+  Scenario Outline: Add Record To Date Then Show The Analysis
+    Given I have no record in "<date>"
+    When I add records with cost of "<costList>", type of "<typeList>" in "<date>"
+    Then I get analysis in "<date>"
+    Then The percentage map in "<date>" will be '<percentMap>'
+  Examples:
+    | typeList | costList | percentMap | date |
+    | Life, Food | 200, 300 | {"Life": 40, "Food": 60} | 2018-07-21 |
+    | Life, Food | 0, 0 | {"Life": 100, "Food": 100} | 2018-07-21 |

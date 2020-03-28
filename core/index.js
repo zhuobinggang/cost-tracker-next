@@ -114,9 +114,16 @@ const getWeeklyAnalysis = (date) => {
   })
 }
 
+function getAnalysisInDate(date){
+  return db.readAllCostInDate(date).then(costList => {
+    return getAnalysis(costList)
+  })
+}
+
 module.exports = {
   getAnalysis,
   totalCost,
+  getAnalysisInDate,
   getWeeklyAnalysis,
   getMonthlyAnalysis,
 }

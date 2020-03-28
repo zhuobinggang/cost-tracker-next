@@ -1,6 +1,11 @@
 import Link from 'next/link'
+import React,{useEffect} from 'react'
 
 export default () => {
+  useEffect(() => {
+    console.log("I enter index again")
+
+  }, []);
   return <div>
     <div>今日支出饼图:</div>
     <div>今日总支出:</div>
