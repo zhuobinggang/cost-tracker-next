@@ -8,7 +8,7 @@ function mapCostToDb(type, cost, detail){
     alert('支出必须为数字');
     return;
   }
-  save({type, cost, detail});
+  return save({type, cost, detail});
   //TODO: Throw Error when type Error
 }
 
@@ -36,7 +36,9 @@ export default () => {
     <div>详情: <input placeholder="可有可无" value={detail} onChange={mapEventToState(setDetail)} /> </div>
     <button onClick={() => {
       //console.log(type, cost, detail);
-      mapCostToDb(type, cost, detail)
+      mapCostToDb(type, cost, detail).then(() => {
+        window.history.back()
+      })
     }}>确认新增</button>
   </div>
 }
