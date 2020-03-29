@@ -120,10 +120,24 @@ function getAnalysisInDate(date){
   })
 }
 
+function dateToDate(date, offset){
+  if(typeof date == 'string'){
+    date = new Date(date);
+  }
+  const newDate = new Date(date);
+  newDate.setDate(date.getDate() + offset);
+  return db.dateFormatted(newDate);
+}
+
 module.exports = {
   getAnalysis,
   totalCost,
   getAnalysisInDate,
   getWeeklyAnalysis,
   getMonthlyAnalysis,
+  getCostListInDate: db.readAllCostInDate,
+  dateFormatted: db.dateFormatted,
+  dateToDate,
+  getIsFirstTimeEnterApp: db.getIsFirstTimeEnterApp,
+  exitNarrativeMode: db.exitNarrativeMode,
 }

@@ -64,11 +64,32 @@ const getStorage = (() => {
   }
 })();
 
+function validType(type){
+  if(typeof type != 'string' || type == ''){
+    console.error('Invalid type value: ' + type + ' have been changed to Unknown!');
+    return 'Unknown';
+  }else{
+    return type
+  }
+}
+
+function validCost(cost){
+  if(cost == '' || isNaN(cost) || Number(cost) < 0){
+    console.error('Invalid cost value ' +  cost +  ' have been changed to zero!')
+    return 0;
+  }else{
+    return cost;
+  }
+}
+
 const save = function(costItem){
   const storage = getStorage();
   if(costItem == null){
     return
   }
+  costItem.type = validType(costItem.type);
+  costItem.cost = validCost(costItem.cost);
+
   const time = costItem.time == null ? dateFormatted(new Date()) : dateFormatted(new Date(costItem.time));
   const {type = 'Unknown', cost = 0, detail = 'No detail'} = costItem;
   return storage.getItem(time).then(item => {
@@ -113,7 +134,18 @@ const emptyAll = function(){
   return storage.emptyAll()
 }
 
+function validList(list){
+  return list.map(item => {
+    return {
+      type: validType(item.type),
+      cost: validCost(item.cost),
+      ...item,
+    }
+  })
+}
+
 const saveList = function(list){
+  list = validList(list);
   const storage = getStorage();
   const map = {}
   list.forEach(item => {
@@ -141,9 +173,19 @@ const logoutCacheDb = () => {
   }
 }
 
+function getIsFirstTimeEnterApp(){
+  return getStorage().getItem('non-narrative-mode').then(res => {
+    return res == null
+  })
+}
+
+function exitNarrativeMode(){
+  return getStorage().setItem('non-narrative-mode', true)
+}
+
 module.exports = {
   save,  isTwoCostEqual, dateFormatted, readAllCostInDate,
   emptyAll,
   readAllCostToday: readAllCostInDate,
-  saveList,logoutCacheDb,
+  saveList,logoutCacheDb,getIsFirstTimeEnterApp,exitNarrativeMode,
 };
